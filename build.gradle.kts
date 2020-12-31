@@ -1,0 +1,18 @@
+plugins {
+    kotlin("jvm") version "1.4.21"
+}
+
+group = "com.prevarinite"
+version = "1.0-SNAPSHOT"
+
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    dependencies {
+        implementation(kotlin("stdlib"))
+    }
+}
