@@ -9,5 +9,5 @@ interface PunishUser {
 
     val punishments: Iterable<Punishment>
 
-    val history: Iterable<PunishHistory>
+    val history: Iterable<UserHistory>
 }

@@ -1,6 +1,6 @@
 package com.prevarinite.punishments.orm
 
-import com.prevarinite.punishments.api.user.PunishHistory
+import com.prevarinite.punishments.api.user.UserHistory
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -17,7 +17,7 @@ object HistoryTable : IntIdTable("history") {
     val time = datetime("time").clientDefault { LocalDateTime.now(ZoneOffset.UTC) }
 }
 
-class HistoryEntity(id: EntityID<Int>) : IntEntity(id), PunishHistory {
+class HistoryEntity(id: EntityID<Int>) : IntEntity(id), UserHistory {
 
     companion object : IntEntityClass<HistoryEntity>(HistoryTable)
 

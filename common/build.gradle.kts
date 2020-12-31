@@ -33,10 +33,13 @@ dependencies {
     implementation("org.jetbrains.exposed","exposed-dao", Versions.EXPOSED)
     implementation("org.jetbrains.exposed","exposed-jdbc", Versions.EXPOSED)
     implementation("org.jetbrains.exposed","exposed-java-time", Versions.EXPOSED)
+
+    implementation("net.md-5","bungeecord-chat","1.16-R0.3")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = listOf(
             "-Xjsr305=strict",
             "-Xopt-in=kotlinx.serialization.ExperimentalSerializationApi",

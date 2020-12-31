@@ -2,7 +2,7 @@ package com.prevarinite.punishments.api.user
 
 import java.time.LocalDateTime
 
-interface PunishHistory {
+interface UserHistory {
 
     val name: String
 

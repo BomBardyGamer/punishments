@@ -4,6 +4,7 @@ import com.prevarinite.punishments.PunishmentsKoinComponent
 import com.prevarinite.punishments.api.punishment.PunishmentType
 import com.prevarinite.punishments.orm.*
 import org.jetbrains.exposed.sql.SortOrder
+import java.time.LocalDateTime
 import java.util.*
 
 // This enables me to make all the below functions accessible at top-level
@@ -31,10 +32,12 @@ suspend fun createHistory(player: PlayerEntity, name: String, ip: String) = Hack
     }
 }
 
-suspend fun createPunishment(player: PlayerEntity, executor: PlayerEntity, reason: String, type: PunishmentType) = Hacks.transaction {
+suspend fun createPunishment(player: PlayerEntity, executor: PlayerEntity, time: LocalDateTime, until: LocalDateTime?, reason: String, type: PunishmentType) = Hacks.transaction {
     PunishmentEntity.new {
         this.user = player
         this.executor = executor
+        this.time = time
+        this.until = until
         this.reason = reason
         this.type = type
     }

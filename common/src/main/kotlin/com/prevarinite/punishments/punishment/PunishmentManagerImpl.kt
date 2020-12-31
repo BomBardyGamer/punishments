@@ -3,10 +3,16 @@ package com.prevarinite.punishments.punishment
 import com.prevarinite.punishments.PunishmentsKoinComponent
 import com.prevarinite.punishments.api.punishment.Punishment
 import com.prevarinite.punishments.api.punishment.PunishmentManager
+import com.prevarinite.punishments.api.punishment.PunishmentType
+import com.prevarinite.punishments.api.user.PunishUser
 import com.prevarinite.punishments.orm.*
+import java.time.LocalDateTime
 import java.util.*
 
 class PunishmentManagerImpl : PunishmentManager, PunishmentsKoinComponent {
+
+    override val punishments: Collection<Punishment>
+        get() = PunishmentEntity.all().toList()
 
     override suspend fun retrieve(id: Int) = transaction {
         PunishmentEntity.find { PunishmentsTable.id eq id }.singleOrNull()
@@ -20,8 +26,20 @@ class PunishmentManagerImpl : PunishmentManager, PunishmentsKoinComponent {
         PunishmentEntity.find { HistoryTable.name eq name }.toList()
     }
 
-    override suspend fun create(punishment: Punishment) = transaction {
-        PunishmentEntity.new { applyValues(punishment) }
+    override suspend fun create(
+        user: PunishUser,
+        executor: PunishUser,
+        reason: String,
+        type: PunishmentType,
+        time: LocalDateTime,
+        until: LocalDateTime?
+    ): Punishment = PunishmentEntity.new {
+        this.user = user as PlayerEntity
+        this.executor = executor as PlayerEntity
+        this.reason = reason
+        this.type = type
+        this.time = time
+        this.until = until
     }
 
     override suspend fun update(punishment: Punishment) = transaction {
@@ -34,13 +52,6 @@ class PunishmentManagerImpl : PunishmentManager, PunishmentsKoinComponent {
         PunishmentEntity.find { PunishmentsTable.id eq (punishment as PunishmentEntity).id }
             .singleOrNull()
             ?.delete()
-    }
-
-    override suspend fun createOrUpdate(punishment: Punishment) = transaction {
-        PunishmentEntity.find { PunishmentsTable.id eq (punishment as PunishmentEntity).id }
-            .singleOrNull()
-            ?.applyValues(punishment)
-            ?: PunishmentEntity.new { applyValues(punishment) }
     }
 
     private fun PunishmentEntity?.applyValues(punishment: Punishment): PunishmentEntity? {
